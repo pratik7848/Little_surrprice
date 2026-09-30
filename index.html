@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Little Surprise</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffe6f2, #e8e0ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .box {
+            width: 94%;
+            max-width: 540px;
+            padding: 35px 25px;
+            background: rgba(255, 255, 255, 0.94);
+            border-radius: 28px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            color: #ff4f91;
+        }
+
+        p {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        button {
+            margin: 9px 5px;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 30px;
+            background: #ff75a8;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        input {
+            padding: 14px;
+            width: 75%;
+            border: 2px solid #ff75a8;
+            border-radius: 20px;
+            outline: none;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #message {
+            margin-top: 15px;
+            color: #ff4f91;
+            font-weight: bold;
+        }
+
+
+        /* LEVEL 1 */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 90px);
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .card {
+            width: 90px;
+            height: 90px;
+            perspective: 800px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backface-visibility: hidden;
+            overflow: hidden;
+        }
+
+        .card-front {
+            background: #ff75a8;
+            color: white;
+            font-size: 35px;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        /* HAMSTER */
+
+        .peek-hamster {
+            position: fixed;
+            bottom: 0;
+            width: 150px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .peek-left {
+            animation: hamsterLeft 3s ease-in-out forwards;
+        }
+
+        .peek-right {
+            animation: hamsterRight 3s ease-in-out forwards;
+        }
+
+        @keyframes hamsterLeft {
+
+            0% {
+                left: -160px;
+            }
+
+            25%, 75% {
+                left: 0;
+            }
+
+            100% {
+                left: -160px;
+            }
+        }
+
+        @keyframes hamsterRight {
+
+            0% {
+                right: -160px;
+            }
+
+            25%, 75% {
+                right: 0;
+            }
+
+            100% {
+                right: -160px;
+            }
+        }
+
+
+        /* LEVEL 2 */
+
+        .heart-area {
+            position: relative;
+            width: 100%;
+            height: 330px;
+            margin-top: 20px;
+            background: rgba(255,230,242,0.55);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 42px;
+            cursor: pointer;
+            user-select: none;
+            animation: heartPop 0.25s ease-out;
+        }
+
+        @keyframes heartPop {
+
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        #heartCount {
+            color: #ff4f91;
+            font-weight: bold;
+        }
+
+
+        /* FINAL / STORY */
+
+        .story {
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .story p {
+            max-width: 430px;
+        }
+
+
+        /* FUNNY HAMSTER GAME */
+
+        #funnyArea {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+            background: #ffeaf3;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        #runningHamster {
+            position: absolute;
+            font-size: 70px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+
+        @media (max-width: 500px) {
+
+            .cards {
+                grid-template-columns: repeat(4, 70px);
+                gap: 10px;
+            }
+
+            .card {
+                width: 70px;
+                height: 70px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            button {
+                font-size: 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- PASSWORD -->
+
+    <div class="box" id="lockScreen">
+
+        <h1>🔐 Little Surprise 👀</h1>
+
+        <p>
+            tumhara favourite food?..
+        </p>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+        >
+
+        <br>
+
+        <button onclick="unlock()">
+            UNLOCK 🔓
+        </button>
+
+        <div id="message"></div>
+
+    </div>
+
+
+    <!-- START -->
+
+    <div class="box hidden" id="startScreen">
+
+        <h1>Nazz 👀✨</h1>
+
+        <p>
+            A little surprise, just for you... ✨
+        </p>
+
+        <button onclick="startGame()">
+            START ✨
+        </button>
+
+    </div>
+
+
+    <!-- LEVEL 1 -->
+
+    <div class="box hidden" id="gameScreen">
+
+        <h1>Find the Pairs 💗</h1>
+
+        <p>
+            Match all the photos 👀✨
+        </p>
+
+        <div class="cards" id="cards"></div>
+
+    </div>
+
+
+    <script>
+
+
+        /* =========================
+           PASSWORD
+        ========================= */
+
+        function unlock() {
+
+            let password =
+                document.getElementById("password").value;
+
+            if (password === "momos") {
+
+                document
+                    .getElementById("lockScreen")
+                    .classList.add("hidden");
+
+                document
+                    .getElementById("startScreen")
+                    .classList.remove("hidden");
+
+            } else {
+
+                document
+                    .getElementById("message")
+                    .innerText =
+                    "❌ Wrong password... try again 👀";
+
+            }
+
+        }
+
+
+        /* =========================
+           START LEVEL 1
+        ========================= */
+
+        function startGame() {
+
+            document
+                .getElementById("startScreen")
+                .classList.add("hidden");
+
+            document
+                .getElementById("gameScreen")
+                .classList.remove("hidden");
+
+            createCards();
+
+            setTimeout(showHamster, 2000);
+
+        }
+
+
+        /* =========================
+           LEVEL 1
+        ========================= */
+
+        let symbols = [
+
+            "photos/1.jpg",
+            "photos/1.jpg",
+
+            "photos/2.jpg",
+            "photos/2.jpg",
+
+            "photos/3.jpg",
+            "photos/3.jpg",
+
+            "photos/4.jpg",
+            "photos/4.jpg"
+
+        ];
+
+
+        let firstCard = null;
+        let secondCard = null;
+        let lockBoard = false;
+        let matched = 0;
+
+
+        function createCards() {
+
+            let container =
+                document.getElementById("cards");
+
+            container.innerHTML = "";
+
+            matched = 0;
+
+            firstCard = null;
+            secondCard = null;
+            lockBoard = false;
+
+            let shuffled =
+                [...symbols].sort(
+                    () => Math.random() - 0.5
+                );
+
+            shuffled.forEach(symbol => {
+
+                let card =
+                    document.createElement("div");
+
+                card.className = "card";
+
+                card.innerHTML = `
+
+                    <div class="card-inner">
+
+                        <div class="card-front">
+                            ?
+                        </div>
+
+                        <div class="card-back">
+
+                            <img
+                                src="${symbol}"
+                                alt="photo"
+                            >
+
+                        </div>
+
+                    </div>
+
+                `;
+
+                card.dataset.symbol = symbol;
+
+                card.onclick = function() {
+
+                    flipCard(card);
+
+                };
+
+                container.appendChild(card);
+
+            });
+
+        }
+
+
+        function flipCard(card) {
+
+            if (
+                lockBoard ||
+                card === firstCard ||
+                card.classList.contains("flipped")
+            ) {
+                return;
+            }
+
+            card.classList.add("flipped");
+
+            if (!firstCard) {
+
+                firstCard = card;
+
+                return;
+
+            }
+
+            secondCard = card;
+
+            checkMatch();
+
+        }
+
+
+        function checkMatch() {
+
+            let isMatch =
+                firstCard.dataset.symbol ===
+                secondCard.dataset.symbol;
+
+            if (isMatch) {
+
+                matched += 2;
+
+                firstCard = null;
+                secondCard = null;
+
+                if (matched === symbols.length) {
+
+                    setTimeout(
+                        showLevel1Complete,
+                        500
+                    );
+
+                }
+
+            } else {
+
+                lockBoard = true;
+
+                setTimeout(function() {
+
+                    firstCard.classList.remove("flipped");
+                    secondCard.classList.remove("flipped");
+
+                    firstCard = null;
+                    secondCard = null;
+
+                    lockBoard = false;
+
+                }, 900);
+
+            }
+
+        }
+
+
+        /* =========================
+           LEVEL 1 COMPLETE
+        ========================= */
+
+        function showLevel1Complete() {
+
+            document
+                .getElementById("gameScreen")
+                .innerHTML = `
+
+                    <div class="story">
+
+                        <h1>
+                            🎉 Challenge Complete!
+                        </h1>
+
+                        <p>
+                            You found all the pairs 👀✨
+                        </p>
+
+                        <img
+                            src="photos/1.jpg"
+                            style="
+                                width:100%;
+                                max-width:320px;
+                                max-height:350px;
+                                object-fit:cover;
+                                border-radius:22px;
+                            "
+                        >
+
+                        <h2>
+                            Best photo in my album 📸💗
+                        </h2>
+
+                        <button onclick="startLevel2()">
+                            NEXT LEVEL ➡️
+                        </button>
+
+                    </div>
+
+                `;
+
+        }
+
+
+        /* =========================
+           HAMSTER PEEK
+        ========================= */
+
+        function showHamster() {
+
+            let old =
+                document.querySelector(".peek-hamster");
+
+            if (old) {
+                old.remove();
+            }
+
+            let hamster =
+                document.createElement("img");
+
+            hamster.src =
+                "photos/hamster.png";
+
+            hamster.className =
+                "peek-hamster";
+
+            let side =
+                Math.random() < 0.5
+                ? "left"
+                : "right";
+
+            hamster.classList.add(
+                side === "left"
+                ? "peek-left"
+                : "peek-right"
+            );
+
+            hamster.onclick = function() {
+
+                alert(
+                    "AYOOO YOU CAUGHT ME 😭🐹"
+                );
+
+                hamster.remove();
+
+            };
+
+            document.body.appendChild(hamster);
+
+            setTimeout(function() {
+
+                if (hamster.parentNode) {
+                    hamster.remove();
+                }
+
+            }, 3000);
+
+        }
+
+
+        /* =========================
+           LEVEL 2
+        ========================= */
+
+        let heartsCaught = 0;
+
+
+        function startLevel2() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        Level 2 💗
+                    </h1>
+
+                    <p>
+                        Catch 10 hearts! 👀
+                    </p>
+
+                    <p>
+                        Hearts:
+                        <span id="heartCount">
+                            0 / 10
+                        </span>
+                    </p>
+
+                    <div
+                        class="heart-area"
+                        id="heartArea"
+                    ></div>
+
+                </div>
+
+            `;
+
+            heartsCaught = 0;
+
+            spawnHeart();
+
+            setTimeout(
+                showLevel2Hamster,
+                2500
+            );
+
+        }
+
+
+        function spawnHeart() {
+
+            if (heartsCaught >= 10) {
+                return;
+            }
+
+            let area =
+                document.getElementById("heartArea");
+
+            if (!area) {
+                return;
+            }
+
+            let heart =
+                document.createElement("div");
+
+            heart.className = "heart";
+
+            heart.innerText = "💗";
+
+            let maxX =
+                area.clientWidth - 50;
+
+            let maxY =
+                area.clientHeight - 50;
+
+            heart.style.left =
+                Math.random() * maxX + "px";
+
+            heart.style.top =
+                Math.random() * maxY + "px";
+
+            heart.onclick = function() {
+
+                heartsCaught++;
+
+                document
+                    .getElementById("heartCount")
+                    .innerText =
+                    heartsCaught + " / 10";
+
+                heart.remove();
+
+                if (heartsCaught >= 10) {
+
+                    showLevel2Complete();
+
+                } else {
+
+                    spawnHeart();
+
+                }
+
+            };
+
+            area.appendChild(heart);
+
+        }
+
+
+        function showLevel2Hamster() {
+
+            let hamster =
+                document.createElement("img");
+
+            hamster.src =
+                "photos/hamster.png";
+
+            hamster.className =
+                "peek-hamster";
+
+            let side =
+                Math.random() < 0.5
+                ? "left"
+                : "right";
+
+            hamster.classList.add(
+                side === "left"
+                ? "peek-left"
+                : "peek-right"
+            );
+
+            hamster.onclick = function() {
+
+                alert(
+                    "AYOOO YOU CAUGHT ME 😭🐹"
+                );
+
+                hamster.remove();
+
+            };
+
+            document.body.appendChild(hamster);
+
+            setTimeout(function() {
+
+                if (hamster.parentNode) {
+                    hamster.remove();
+                }
+
+            }, 3000);
+
+        }
+
+
+        function showLevel2Complete() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        🎉 Level 2 Complete!
+                    </h1>
+
+                    <p>
+                        You caught all 10 hearts! 💗
+                    </p>
+
+                    <h2>
+                        Okayyy, you're actually
+                        good at this 👀
+                    </h2>
+
+                    <button onclick="startLevel3()">
+                        LEVEL 3 ➡️
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =========================
+           LEVEL 3
+        ========================= */
+
+        function startLevel3() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        How Well Do You Know Me? 👀💗
+                    </h1>
+
+                    <p>
+                        Ab dekhte hain tum mujhe
+                        kitna samajhti ho.
+                    </p>
+
+                    <button onclick="question1()">
+                        LET'S SEE 👀
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function question1() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        Question 1 🧠
+                    </h1>
+
+                    <p>
+                        Tumhare hisaab se main
+                        kaisa insaan hoon?
+                    </p>
+
+                    <button onclick="question2()">
+                        😌 Calm & understanding
+                    </button>
+
+                    <button onclick="question2()">
+                         Thoda pagal, but fun
+                    </button>
+
+                    <button onclick="question2()">
+                        🤍 Caring & thoughtful
+                    </button>
+
+                    <button onclick="question2()">
+                        😭 In teeno ka dangerous combination
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function question2() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        Question 2 🏔️
+                    </h1>
+
+                    <p>
+                        Agar mere saath ghoomne jaana ho,
+                        toh meri vibe ke liye kya choose karogi?
+                    </p>
+
+                    <button onclick="question3()">
+                        🏔️ Mountains + peaceful views
+                    </button>
+
+                    <button onclick="question3()">
+                        🌃 Night city drive
+                    </button>
+
+                    <button onclick="question3()">
+                        🌊 Beach + sunset
+                    </button>
+
+                    <button onclick="question3()">
+                        ☕ Quiet café + long talks
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function question3() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        Question 3 👀
+                    </h1>
+
+                    <p>
+                        Agar hum kabhi date par gaye,
+                        toh kis type ki honi chahiye date?
+                    </p>
+
+                    <button onclick="quoteScreen()">
+                        🚗 Long car drive + music
+                    </button>
+
+                    <button onclick="quoteScreen()">
+                        🚶 Long walk + random conversations
+                    </button>
+
+                    <button onclick="quoteScreen()">
+                        🍕 Food + bakchodi
+                    </button>
+
+                    <button onclick="quoteScreen()">
+                        🌅 Somewhere peaceful + just talking
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =========================
+           QUOTE
+        ========================= */
+
+        function quoteScreen() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        🤍
+                    </h1>
+
+                    <p>
+                        “Maybe the best part wouldn't be
+                        where we go…”
+                    </p>
+
+                    <h2>
+                        “…but who I'm there with.” 🤍
+                    </h2>
+
+                    <button onclick="funnyScreen()">
+                        NEXT ➡️
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =========================
+           FUNNY PART
+        ========================= */
+
+        function funnyScreen() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        Okay okay 😭
+                    </h1>
+
+                    <p>
+                        Enough filmy stuff...
+                    </p>
+
+                    <h2>
+                        Ab asli test. 👀
+                    </h2>
+
+                    <button onclick="funnyGame()">
+                        I'M READY 😭
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function funnyGame() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        🐹 CATCH ME IF YOU CAN
+                    </h1>
+
+                    <p>
+                        Let's see if you can catch
+                        this little guy 
+                    </p>
+
+                    <div id="funnyArea">
+
+                        <div
+                            id="runningHamster"
+                            onclick="caughtHamster()"
+                        >
+                            🐹
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            moveHamster();
+
+        }
+
+
+        function moveHamster() {
+
+            let hamster =
+                document.getElementById(
+                    "runningHamster"
+                );
+
+            if (!hamster) {
+                return;
+            }
+
+            let x =
+                Math.random() * 75;
+
+            let y =
+                Math.random() * 70;
+
+            hamster.style.left =
+                x + "%";
+
+            hamster.style.top =
+                y + "%";
+
+            setTimeout(
+                moveHamster,
+                700
+            );
+
+        }
+
+
+        function caughtHamster() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        AYOOO YOU CAUGHT ME 😭🐹
+                    </h1>
+
+                    <p>
+                        Okay okay... you win 🔥
+                    </p>
+
+                    <button onclick="level3Complete()">
+                        NEXT ➡️
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function level3Complete() {
+
+            document.body.innerHTML = `
+
+                <div class="box">
+
+                    <h1>
+                        🎉 LEVEL 3 COMPLETE!
+                    </h1>
+
+                    <p>
+                        You survived the questions
+                        AND caught the hamster. 😭
+                    </p>
+
+                    <h2>
+                        But we're not done yet... 👀
+                    </h2>
+
+                    <button onclick="startFinalLevel()">
+                        FINAL LEVEL 🔒
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =========================
+           FINAL LEVEL
+        ========================= */
+
+        function startFinalLevel() {
+
+            document.body.innerHTML = `
+
+                <div class="box story">
+
+                    <h1>
+                        You made it till the end… 👀
+                    </h1>
+
+                    <p>
+                        But honestly, this was never
+                        really about winning.
+                    </p>
+
+                    <button onclick="finalMessage1()">
+                        CONTINUE ✨
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function finalMessage1() {
+
+            document.body.innerHTML = `
+
+                <div class="box story">
+
+                    <p>
+                        I could've just sent you
+                        a message…
+                    </p>
+
+                    <h2>
+                        …but where's the fun in that? 
+                    </h2>
+
+                    <button onclick="finalMessage2()">
+                        NEXT 👀
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function finalMessage2() {
+
+            document.body.innerHTML = `
+
+                <div class="box story">
+
+                    <h1>
+                        So I made this little
+                        world instead. ✨
+                    </h1>
+
+                    <p>
+                        A password, some photos,
+                        a few questions, a crazy
+                        hamster… and a whole lot
+                        of unnecessary effort. 😭🐹
+                    </p>
+
+                    <button onclick="finalMessage3()">
+                        CONTINUE 🤍
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function finalMessage3() {
+
+            document.body.innerHTML = `
+
+                <div class="box story">
+
+                    <h1>
+                        Maybe that's what
+                        makes it different. 🤍
+                    </h1>
+
+                    <p>
+                        Not because it's perfect…
+                    </p>
+
+                    <h2>
+                        but because I actually
+                        made it for you.
+                    </h2>
+
+                    <button onclick="finalMessage4()">
+                        ONE LAST THING… 👀
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function finalMessage4() {
+
+            document.body.innerHTML = `
+
+                <div class="box story">
+
+                    <h1>
+                        ✨
+                    </h1>
+
+                    <p>
+                        I hope this little
+                        surprise made you smile.
+                    </p>
+
+                    <button onclick="finalMessage5()">
+                        OPEN IT 👀
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function finalMessage5() {
+
+            document.body.innerHTML = `
+
+                <div class="box story">
+
+                    <h1>
+                        🤍
+                    </h1>
+
+                    <p>
+                        You don't have to say anything.
+                    </p>
+
+                    <h2>
+                        I just wanted you to know
+                        that someone thought you
+                        were worth the effort.
+                    </h2>
+
+                    <p>
+                        — Made with a little
+                        too much effort ✨
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>
